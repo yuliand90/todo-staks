@@ -58,4 +58,38 @@ router.post('/create-task', function (req, res) {//peticion tipo post al puerto 
         }
     });
 });
+router.get('/all-tasks', function (req, res) { //nueva ruta metodo find
+    TaskModel.find(function (err, data) {
+        if (err) {
+            res.status(500).send("Internal error\n");
+        }
+        else {
+            res.status(200).send(data);
+        }
+    });
+});
+
+router.post('/update-task', function (req, res) { //nueva ruta para actualizar
+    TaskModel.updateOne({ TaskId: req.body.TaskId }, { //metodos de mongoos
+        Name: req.body.Name,
+        Deadline: req.body.Deadline
+    }, function (err, data) {
+        if (err) {
+            res.status(500).send("Internal error\n");
+        } else {
+            res.status(200).send("OK\n");
+        }
+    });
+});
+
+router.delete('/delete-task', function (req, res) {//metodo delete
+    TaskModel.deleteOne({ TaskId: req.body.TaskId }, function (err, data) {
+        if (err) {
+            res.status(500).send("Internal error\n");
+        } else {
+            res.status(200).send("OK\n");
+        }
+    });
+});
+
 module.exports = router;
